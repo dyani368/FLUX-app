@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1017626225885",
+    "project_id": "flux-1da2d",
+    "storage_bucket": "flux-1da2d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017626225885:android:b103f4486ba5758a517f34",
+        "android_client_info": {
+          "package_name": "com.example.flux"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCT3TY9r88cGtyA89w7BoaGIQmKm9ejg2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
