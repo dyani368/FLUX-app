@@ -1,9 +1,51 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Flux" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base theme -->
+    <style name="Base.Theme.Flux" parent="Theme.Material3.DayNight.NoActionBar"/>
+
+    <!-- Main application theme -->
+    <style name="Theme.Flux" parent="Base.Theme.Flux" />
+
+    <!-- Dark Minimal (default) -->
+    <style name="Theme.Flux.DarkMinimal" parent="Base.Theme.Flux">
+        <item name="colorPrimary">#B8A2D1</item>
+        <item name="colorOnPrimary">#121212</item>
+        <item name="colorSurface">#1E1E1E</item>
+        <item name="colorOnSurface">#E0E0E0</item>
+        <item name="android:windowBackground">#121212</item>
+        <item name="android:statusBarColor">#121212</item>
     </style>
 
-    <style name="Theme.Flux" parent="Base.Theme.Flux" />
+    <!-- Warm Neutral (Adjusted for better contrast) -->
+    <style name="Theme.Flux.WarmNeutral" parent="Base.Theme.Flux">
+        <item name="colorPrimary">#8EB79F</item>
+        <item name="colorOnPrimary">#1A1A1A</item>
+        <item name="colorSurface">#F2EBE1</item>
+        <item name="colorOnSurface">#2C2C2C</item>
+        <item name="android:windowBackground">#EAE4D9</item>
+        <item name="android:statusBarColor">#EAE4D9</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <!-- Cool Calm -->
+    <style name="Theme.Flux.CoolCalm" parent="Base.Theme.Flux">
+        <item name="colorPrimary">#A2C4D5</item>
+        <item name="colorOnPrimary">#121212</item>
+        <item name="colorSurface">#1A2030</item>
+        <item name="colorOnSurface">#D0E0F0</item>
+        <item name="android:windowBackground">#101820</item>
+        <item name="android:statusBarColor">#101820</item>
+    </style>
+
+    <!-- Forest -->
+    <style name="Theme.Flux.Forest" parent="Base.Theme.Flux">
+        <item name="colorPrimary">#A8D5BA</item>
+        <item name="colorOnPrimary">#0D1F0D</item>
+        <item name="colorSurface">#1A2E1A</item>
+        <item name="colorOnSurface">#D0EDD0</item>
+        <item name="android:windowBackground">#0D1A0D</item>
+        <item name="android:statusBarColor">#0D1A0D</item>
+    </style>
+
 </resources>

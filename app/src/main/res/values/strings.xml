@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">flux</string>
+    <string name="log_sleep">Log Sleep</string>
 </resources>

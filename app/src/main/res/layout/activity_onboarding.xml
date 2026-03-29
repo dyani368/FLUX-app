@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#0F0F0F">
+
+    <TextView
+        android:id="@+id/tvQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What's your main goal?"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="48dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOpt1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🌅 Build a Morning Routine"
+        android:layout_marginBottom="12dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOpt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="💆 Recover from Burnout"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOpt3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🧠 Build Deep Work Habits"
+        style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+</LinearLayout>

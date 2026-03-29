@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- left accent bar — color shows status -->
+        <View
+            android:id="@+id/viewStatusBar"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="2dp">
+
+                    <TextView
+                        android:id="@+id/tvHabitName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="8dp"/>
+
+                    <!-- paused badge -->
+                    <TextView
+                        android:id="@+id/tvPausedBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PAUSED"
+                        android:textSize="9sp"
+                        android:textColor="#FFB300"
+                        android:background="@drawable/badge_bg"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:visibility="gone"/>
+
+                    <!-- logged today badge -->
+                    <TextView
+                        android:id="@+id/tvLoggedBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✓ DONE"
+                        android:textSize="9sp"
+                        android:textColor="#4CAF50"
+                        android:background="@drawable/badge_bg_green"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvHabitCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="?android:attr/textColorSecondary"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvDifficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginEnd="12dp"/>
+
+            <ImageButton
+                android:id="@+id/btnCamera"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@android:drawable/ic_menu_camera"
+                app:tint="?attr/colorPrimary"
+                android:background="@drawable/camera_btn_bg"
+                android:contentDescription="Photo log"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

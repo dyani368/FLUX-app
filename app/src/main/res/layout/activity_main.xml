@@ -1,19 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="?android:attr/windowBackground">
 
-    <TextView
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="32dp">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvGreeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Good morning"
+                        android:textSize="26sp"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="?android:attr/textColorSecondary"/>
+
+                </LinearLayout>
+
+                <!-- settings shortcut -->
+                <ImageButton
+                    android:id="@+id/btnSettingsShortcut"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@android:drawable/ic_menu_preferences"
+                    app:tint="?attr/colorOnSurface"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Settings"/>
+
+            </LinearLayout>
+
+            <!-- Burnout Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:text="Burnout Status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvBurnoutStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Normal"
+                        android:textColor="#4CAF50"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+
+                    <ProgressBar
+                        android:id="@+id/burnoutProgress"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:max="100"
+                        android:progress="20"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:text="Momentum"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textSize="12sp"/>
+
+                        <!-- skeleton shown while loading -->
+                        <TextView
+                            android:id="@+id/tvMomentumSkeleton"
+                            android:layout_width="60dp"
+                            android:layout_height="14dp"
+                            android:background="#2AFFFFFF"
+                            android:visibility="visible"/>
+
+                        <!-- actual value, hidden until loaded -->
+                        <TextView
+                            android:id="@+id/tvMomentum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="12sp"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDailyTip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:text="💡 Today's Tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvDailyTip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Loading your personalised tip..."
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="4dp"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- AI Insight Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAiInsight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:text="✦ AI Weekly Insight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="12sp"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnGetInsight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Generate"
+                            android:textSize="11sp"
+                            style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvAiInsight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tap Generate for your personalised weekly analysis."
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="4dp"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Heatmap Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:text="Monthly Consistency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="12dp"/>
+
+                    <com.example.flux.ui.dashboard.HeatmapView
+                        android:id="@+id/heatmapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Habits Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:text="Today's Habits"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddHabit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+ Add"
+                    android:textSize="12sp"
+                    style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+            </LinearLayout>
+
+            <!-- Habits RecyclerView — not scrollable itself -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHabits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"/>
+
+            <!-- bottom padding so FAB doesn't cover last habit -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorSurface"
+        app:itemIconTint="?attr/colorPrimary"
+        app:itemTextColor="?attr/colorOnSurface"
+        app:menu="@menu/bottom_nav_menu"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSleep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="84dp"
+        app:srcCompat="@android:drawable/ic_menu_agenda"
+        app:backgroundTint="?attr/colorPrimary"
+        app:tint="?attr/colorOnPrimary"
+        android:contentDescription="@string/log_sleep" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Particle overlay -->
+    <com.example.flux.ui.dashboard.ParticleView
+        android:id="@+id/particleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

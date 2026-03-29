@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="?android:attr/windowBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="64dp">
+
+        <TextView
+            android:text="Settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textColor="?attr/colorOnSurface"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- THEME SECTION -->
+        <TextView
+            android:text="THEME"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:letterSpacing="0.15"
+            android:layout_marginBottom="12dp"/>
+
+        <RadioGroup
+            android:id="@+id/themeGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+            <RadioButton
+                android:id="@+id/themeDarkMinimal"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="🌑  Dark Minimal"
+                android:textSize="15sp"
+                android:textColor="?attr/colorOnSurface"
+                android:gravity="center_vertical"/>
+
+            <RadioButton
+                android:id="@+id/themeWarmNeutral"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="🌿  Warm Neutral"
+                android:textSize="15sp"
+                android:textColor="?attr/colorOnSurface"
+                android:gravity="center_vertical"/>
+
+            <RadioButton
+                android:id="@+id/themeCoolCalm"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="🧊  Cool Calm"
+                android:textSize="15sp"
+                android:textColor="?attr/colorOnSurface"
+                android:gravity="center_vertical"/>
+
+            <RadioButton
+                android:id="@+id/themeForest"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="🌲  Forest"
+                android:textSize="15sp"
+                android:textColor="?attr/colorOnSurface"
+                android:gravity="center_vertical"/>
+
+        </RadioGroup>
+
+        <!-- BEHAVIOUR SECTION -->
+        <TextView
+            android:text="BEHAVIOUR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:letterSpacing="0.15"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:text="Completion animations"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="15sp"/>
+
+            <Switch
+                android:id="@+id/switchAnimations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:text="Show momentum score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="15sp"/>
+
+            <Switch
+                android:id="@+id/switchMomentum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:text="Annoying reminders mode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="15sp"/>
+
+            <Switch
+                android:id="@+id/switchAnnoyingMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="Minimal Mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:text="Hides AI, burnout, community — just habits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:textColor="#888888"/>
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/switchMinimalMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- NOTIFICATIONS -->
+        <TextView
+            android:text="NOTIFICATIONS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:letterSpacing="0.15"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:text="Smart reminders"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="15sp"/>
+
+            <Switch
+                android:id="@+id/switchReminders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+
+        </LinearLayout>
+
+        <!-- ACCOUNT -->
+        <TextView
+            android:text="ACCOUNT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:letterSpacing="0.15"
+            android:layout_marginBottom="12dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnExport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Export Data as CSV"
+            android:layout_marginBottom="12dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSignOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Out"
+            android:textColor="?attr/colorPrimary"
+            style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+    </LinearLayout>
+</ScrollView>

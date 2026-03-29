@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:paddingTop="64dp"
+    android:background="?android:attr/windowBackground">
+
+    <TextView
+        android:text="Log Sleep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:textColor="?attr/colorOnSurface"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"/>
+
+    <TextView
+        android:text="Hours slept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/etHours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="e.g. 7.5"
+        android:inputType="numberDecimal"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorHint="?android:attr/textColorSecondary"
+        android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:text="Energy level (1–5)"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_marginBottom="8dp"/>
+
+    <SeekBar
+        android:id="@+id/seekEnergy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="4"
+        android:progress="2"
+        android:progressTint="?attr/colorPrimary"
+        android:thumbTint="?attr/colorPrimary"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvEnergyLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Energy: 3"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginBottom="32dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveSleep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Sleep Log"
+        android:textSize="16sp"
+        android:layout_marginBottom="24dp"
+        app:backgroundTint="?attr/colorPrimary"
+        app:rippleColor="?attr/colorOnPrimary"/>
+
+    <!-- recent sleep summary -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="?attr/colorSurface"
+        app:cardCornerRadius="12dp"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:text="Last 7 nights"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                android:id="@+id/llSleepHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- motivational note -->
+    <TextView
+        android:id="@+id/tvSleepTip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="💤 Most habit completions happen after 7+ hours of sleep."
+        android:textSize="13sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:lineSpacingExtra="4dp"
+        android:gravity="center"
+        android:padding="16dp"/>
+
+</LinearLayout>
