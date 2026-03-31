@@ -4,110 +4,139 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="?attr/colorSurface"
-    app:cardCornerRadius="12dp"
+    app:cardBackgroundColor="#1E1E1E"
+    app:cardCornerRadius="20dp"
     app:cardElevation="0dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="18dp"
+        android:gravity="center_vertical">
 
-        <!-- left accent bar — color shows status -->
+        <!-- left accent pill -->
         <View
             android:id="@+id/viewStatusBar"
             android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:background="?attr/colorPrimary"/>
+            android:layout_height="48dp"
+            android:background="@drawable/pill_accent"
+            android:layout_marginEnd="14dp"/>
 
+        <!-- content -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
+            <!-- name + badges row -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="2dp">
-
-                    <TextView
-                        android:id="@+id/tvHabitName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="8dp"/>
-
-                    <!-- paused badge -->
-                    <TextView
-                        android:id="@+id/tvPausedBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PAUSED"
-                        android:textSize="9sp"
-                        android:textColor="#FFB300"
-                        android:background="@drawable/badge_bg"
-                        android:paddingStart="6dp"
-                        android:paddingEnd="6dp"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="2dp"
-                        android:visibility="gone"/>
-
-                    <!-- logged today badge -->
-                    <TextView
-                        android:id="@+id/tvLoggedBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="✓ DONE"
-                        android:textSize="9sp"
-                        android:textColor="#4CAF50"
-                        android:background="@drawable/badge_bg_green"
-                        android:paddingStart="6dp"
-                        android:paddingEnd="6dp"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="2dp"
-                        android:visibility="gone"/>
-
-                </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
 
                 <TextView
-                    android:id="@+id/tvHabitCategory"
+                    android:id="@+id/tvHabitName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvPausedBadge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="?android:attr/textColorSecondary"/>
+                    android:text="PAUSED"
+                    android:textSize="9sp"
+                    android:textColor="#FFB300"
+                    android:background="@drawable/badge_bg"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tvLoggedBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✓  DONE"
+                    android:textSize="9sp"
+                    android:textColor="#4CAF50"
+                    android:background="@drawable/badge_bg_green"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvDifficulty"
-                android:layout_width="wrap_content"
+            <!-- category + difficulty -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:layout_marginEnd="12dp"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <ImageButton
-                android:id="@+id/btnCamera"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@android:drawable/ic_menu_camera"
-                app:tint="?attr/colorPrimary"
-                android:background="@drawable/camera_btn_bg"
-                android:contentDescription="Photo log"/>
+                <TextView
+                    android:id="@+id/tvHabitCategory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/tvDifficulty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:textColor="#B8A2D1"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+
+        <!-- stats button -->
+        <FrameLayout
+            android:id="@+id/btnHabitStats"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/circle_camera_bg"
+            android:layout_marginStart="12dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_info_details"
+                app:tint="#B8A2D1"/>
+
+        </FrameLayout>
+
+        <!-- camera button -->
+        <FrameLayout
+            android:id="@+id/btnHabitPhoto"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/circle_camera_bg"
+            android:layout_marginStart="12dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_camera"
+                app:tint="#B8A2D1"/>
+
+        </FrameLayout>
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

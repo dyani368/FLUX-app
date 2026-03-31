@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         setupGreeting();
         setupRecyclerView();
         setupObservers();
+        setupChips();
         applyMinimalMode();
         setupGeminiInsight();
         setupAddButton();
@@ -97,22 +98,81 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setupChips() {
+        TextView chipAll = findViewById(R.id.chipAll);
+        TextView chipMorning = findViewById(R.id.chipMorning);
+        TextView chipAfternoon = findViewById(R.id.chipAfternoon);
+        TextView chipEvening = findViewById(R.id.chipEvening);
+
+        View.OnClickListener chipListener = v -> {
+            // reset all
+            chipAll.setBackgroundResource(R.drawable.chip_inactive);
+            chipAll.setTextColor(0xFF888888);
+            chipMorning.setBackgroundResource(R.drawable.chip_inactive);
+            chipMorning.setTextColor(0xFF888888);
+            chipAfternoon.setBackgroundResource(R.drawable.chip_inactive);
+            chipAfternoon.setTextColor(0xFF888888);
+            chipEvening.setBackgroundResource(R.drawable.chip_inactive);
+            chipEvening.setTextColor(0xFF888888);
+
+            // activate selected
+            ((TextView) v).setBackgroundResource(R.drawable.chip_active);
+            ((TextView) v).setTextColor(0xFF121212);
+        };
+
+        chipAll.setOnClickListener(chipListener);
+        chipMorning.setOnClickListener(chipListener);
+        chipAfternoon.setOnClickListener(chipListener);
+        chipEvening.setOnClickListener(chipListener);
+    }
+
     private void applyMinimalMode() {
         SharedPreferences prefs = getSharedPreferences("flux_prefs", MODE_PRIVATE);
         boolean minimal = prefs.getBoolean("minimal_mode", false);
 
-        int visible = minimal ? View.GONE : View.VISIBLE;
+        if (minimal) {
+            // BRUTAL MINIMAL — black and white, habits only
+            getWindow().getDecorView().setBackgroundColor(0xFF000000);
 
-        // hide these in minimal mode
-        findViewById(R.id.cardAiInsight).setVisibility(visible);
-        findViewById(R.id.cardDailyTip).setVisibility(visible);
+            // hide everything except habits
+            findViewById(R.id.cardAiInsight).setVisibility(View.GONE);
+            findViewById(R.id.cardDailyTip).setVisibility(View.GONE);
+            findViewById(R.id.layoutStatusRow).setVisibility(View.GONE);
+            findViewById(R.id.layoutChips).setVisibility(View.GONE);
 
-        // hide momentum row inside burnout card
-        findViewById(R.id.tvMomentum).setVisibility(visible);
+            // make text black and white
+            ((TextView) findViewById(R.id.tvGreeting))
+                .setTextColor(0xFF888888);
+            ((TextView) findViewById(R.id.tvDate))
+                .setTextColor(0xFF444444);
 
-        // hide bottom nav community tab
-        BottomNavigationView nav = findViewById(R.id.bottomNav);
-        nav.getMenu().findItem(R.id.nav_social).setVisible(!minimal);
+            // hide community from bottom nav
+            BottomNavigationView nav = findViewById(R.id.bottomNav);
+            nav.getMenu().findItem(R.id.nav_social).setVisible(false);
+            nav.getMenu().findItem(R.id.nav_sleep).setVisible(false);
+            nav.setBackgroundColor(0xFF000000);
+            nav.setItemIconTintList(
+                android.content.res.ColorStateList.valueOf(0xFF666666));
+            nav.setItemTextColor(
+                android.content.res.ColorStateList.valueOf(0xFF444444));
+
+            // monochrome habit cards
+            applyMonochromeToHabits();
+
+        } else {
+            // restore full mode
+            getWindow().getDecorView().setBackgroundColor(0xFF121212);
+            findViewById(R.id.cardAiInsight).setVisibility(View.VISIBLE);
+            findViewById(R.id.cardDailyTip).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutStatusRow).setVisibility(View.VISIBLE);
+            // chips
+            findViewById(R.id.layoutChips).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void applyMonochromeToHabits() {
+        // handled in HabitAdapter — pass minimal flag
+        adapter.setMinimalMode(true);
     }
 
     @Override
@@ -310,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel.getAllLogs().observe(this, logs -> {
             HeatmapView heatmap = findViewById(R.id.heatmapView);
+            if (heatmap == null) return;
             Map<Integer, Integer> completions = new HashMap<>();
             Map<Integer, Float> sleep = new HashMap<>();
 
@@ -337,18 +398,17 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel.getBurnoutIndex().observe(this, burnout -> {
             TextView tvStatus = findViewById(R.id.tvBurnoutStatus);
-            android.widget.ProgressBar pb = findViewById(R.id.burnoutProgress);
-            pb.setProgress(burnout.intValue());
+            View dot = findViewById(R.id.viewBurnoutDot);
 
             if (burnout < 33) {
                 tvStatus.setText("Normal");
-                tvStatus.setTextColor(0xFF4CAF50);
+                dot.setBackgroundResource(R.drawable.dot_green);
             } else if (burnout < 66) {
                 tvStatus.setText("Strained");
-                tvStatus.setTextColor(0xFFFFB300);
+                dot.setBackgroundColor(0xFFFFB300);
             } else {
                 tvStatus.setText("At Risk");
-                tvStatus.setTextColor(0xFFE53935);
+                dot.setBackgroundColor(0xFFE53935);
             }
         });
 
@@ -376,19 +436,23 @@ public class MainActivity extends AppCompatActivity {
             float burnout = viewModel.getBurnoutIndex().getValue() != null
                     ? viewModel.getBurnoutIndex().getValue() : 0f;
             float momentum = viewModel.getMomentumScore().getValue() != null
-                    ? viewModel.getMomentumScore().getValue() : 100f;
+                    ? viewModel.getMomentumScore().getValue() : 50f;
+
+            int totalHabits = adapter.getItemCount();
+            // Estimate completed from momentum (momentum is 0-100 score)
+            int completedHabits = (int) ((momentum / 100f) * totalHabits * 7);
 
             gemini.getWeeklyInsight(
-                    5, 7,       // completed, total habits
-                    6.5f,       // avg sleep
+                    completedHabits, totalHabits * 7,
+                    7.0f,
                     burnout,
-                    "workout, reading",
+                    "some habits",
                     new GeminiService.GeminiCallback() {
                         @Override public void onResult(String insight) {
                             tvInsight.setText(insight);
                         }
                         @Override public void onError(String error) {
-                            tvInsight.setText("Couldn't generate insight. Try again.");
+                            tvInsight.setText("Couldn't load insight. Check your API key or internet connection.");
                         }
                     });
         });
@@ -398,10 +462,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnAddHabit).setOnClickListener(v -> {
             new AddHabitDialogFragment()
                     .show(getSupportFragmentManager(), "add_habit");
-        });
-
-        findViewById(R.id.fabSleep).setOnClickListener(v -> {
-            startActivity(new Intent(this, SleepActivity.class));
         });
     }
 
@@ -432,7 +492,7 @@ public class MainActivity extends AppCompatActivity {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         String timeOfDay = hour < 12 ? "morning" : hour < 17 ? "afternoon" : "evening";
 
-        gemini.getDailyTip(6.5f, momentum, "workout", timeOfDay,
+        gemini.getDailyTip(6.5f, momentum, "consistency", timeOfDay,
                 new GeminiService.GeminiCallback() {
                     @Override public void onResult(String tip) { tvTip.setText(tip); }
                     @Override public void onError(String e) {

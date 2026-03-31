@@ -95,7 +95,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void setupExport() {
         HabitRepository repo = new HabitRepository(getApplication());
-        findViewById(R.id.btnExport).setOnClickListener(v -> {
+        findViewById(R.id.btnExportRow).setOnClickListener(v -> {
             Toast.makeText(this, "Preparing export...", Toast.LENGTH_SHORT).show();
             repo.exportData((habits, logs, sleep) -> {
                 File csv = ExportHelper.exportHabitsCSV(this, habits, logs, sleep);
@@ -109,7 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setupSignOut() {
-        findViewById(R.id.btnSignOut).setOnClickListener(v -> {
+        findViewById(R.id.btnSignOutRow).setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             prefs.edit().putBoolean("onboarding_done", false).apply();
             startActivity(new Intent(this, LoginActivity.class));

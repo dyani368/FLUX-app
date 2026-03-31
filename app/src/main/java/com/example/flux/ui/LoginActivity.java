@@ -1,14 +1,14 @@
 package com.example.flux.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.flux.MainActivity;
 import com.example.flux.R;
+import com.example.flux.ui.onboarding.OnboardingActivity;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
@@ -24,49 +24,52 @@ public class LoginActivity extends AppCompatActivity {
 
         // skip login if already signed in
         if (auth.getCurrentUser() != null) {
-            goToMain();
+            goToMain(false);
             return;
         }
 
         setContentView(R.layout.activity_login);
 
-        EditText etEmail = findViewById(R.id.etEmail);
-        EditText etPassword = findViewById(R.id.etPassword);
+        final TextInputEditText etEmail = findViewById(R.id.etEmail);
+        final TextInputEditText etPassword = findViewById(R.id.etPassword);
 
         findViewById(R.id.btnLogin).setOnClickListener(v -> {
-            String email = etEmail.getText().toString().trim();
-            String pass = etPassword.getText().toString().trim();
+            String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
+            String pass = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
+            
             if (email.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
+            
             auth.signInWithEmailAndPassword(email, pass)
-                    .addOnSuccessListener(r -> goToMain())
+                    .addOnSuccessListener(r -> goToMain(false)) // false = skip onboarding
                     .addOnFailureListener(e ->
                             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show());
         });
 
         findViewById(R.id.btnRegister).setOnClickListener(v -> {
-            String email = etEmail.getText().toString().trim();
-            String pass = etPassword.getText().toString().trim();
+            String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
+            String pass = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
+            
             if (email.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
+            
             auth.createUserWithEmailAndPassword(email, pass)
-                    .addOnSuccessListener(r -> goToMain())
+                    .addOnSuccessListener(r -> goToMain(true)) // true = show onboarding
                     .addOnFailureListener(e ->
                             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show());
         });
     }
 
-    private void goToMain() {
-        SharedPreferences prefs = getSharedPreferences("flux_prefs", MODE_PRIVATE);
-        boolean done = prefs.getBoolean("onboarding_done", false);
-        if (done) {
-            startActivity(new Intent(this, MainActivity.class));
+    private void goToMain(boolean isNewUser) {
+        if (isNewUser) {
+            startActivity(new Intent(this,
+                com.example.flux.ui.onboarding.OnboardingActivity.class));
         } else {
-            startActivity(new Intent(this, com.example.flux.ui.onboarding.OnboardingActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
         finish();
     }

@@ -2,23 +2,25 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="?android:attr/windowBackground">
+    android:background="#121212">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="64dp">
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="40dp">
 
         <TextView
-            android:text="Settings"
+            android:text="ME"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:textColor="?attr/colorOnSurface"
+            android:textSize="32sp"
+            android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp"/>
+            android:paddingTop="52dp"
+            android:paddingBottom="24dp"/>
 
         <!-- THEME SECTION -->
         <TextView
@@ -26,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="11sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="#666666"
             android:letterSpacing="0.15"
             android:layout_marginBottom="12dp"/>
 
@@ -34,158 +36,71 @@
             android:id="@+id/themeGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/settings_group_bg"
+            android:padding="4dp"
             android:layout_marginBottom="24dp">
 
-            <RadioButton
-                android:id="@+id/themeDarkMinimal"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="🌑  Dark Minimal"
-                android:textSize="15sp"
-                android:textColor="?attr/colorOnSurface"
-                android:gravity="center_vertical"/>
-
-            <RadioButton
-                android:id="@+id/themeWarmNeutral"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="🌿  Warm Neutral"
-                android:textSize="15sp"
-                android:textColor="?attr/colorOnSurface"
-                android:gravity="center_vertical"/>
-
-            <RadioButton
-                android:id="@+id/themeCoolCalm"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="🧊  Cool Calm"
-                android:textSize="15sp"
-                android:textColor="?attr/colorOnSurface"
-                android:gravity="center_vertical"/>
-
-            <RadioButton
-                android:id="@+id/themeForest"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="🌲  Forest"
-                android:textSize="15sp"
-                android:textColor="?attr/colorOnSurface"
-                android:gravity="center_vertical"/>
+            <RadioButton android:id="@+id/themeDarkMinimal" android:layout_width="match_parent" android:layout_height="48dp" android:text="🌑  Dark Minimal" android:textSize="15sp" android:textColor="#FFFFFF" android:gravity="center_vertical" android:paddingStart="12dp"/>
+            <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#2A2A2A"/>
+            <RadioButton android:id="@+id/themeWarmNeutral" android:layout_width="match_parent" android:layout_height="48dp" android:text="🌿  Warm Neutral" android:textSize="15sp" android:textColor="#FFFFFF" android:gravity="center_vertical" android:paddingStart="12dp"/>
+            <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#2A2A2A"/>
+            <RadioButton android:id="@+id/themeCoolCalm" android:layout_width="match_parent" android:layout_height="48dp" android:text="🧊  Cool Calm" android:textSize="15sp" android:textColor="#FFFFFF" android:gravity="center_vertical" android:paddingStart="12dp"/>
+            <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#2A2A2A"/>
+            <RadioButton android:id="@+id/themeForest" android:layout_width="match_parent" android:layout_height="48dp" android:text="🌲  Forest" android:textSize="15sp" android:textColor="#FFFFFF" android:gravity="center_vertical" android:paddingStart="12dp"/>
 
         </RadioGroup>
 
-        <!-- BEHAVIOUR SECTION -->
+        <!-- BEHAVIOUR -->
         <TextView
             android:text="BEHAVIOUR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="11sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="#666666"
             android:letterSpacing="0.15"
             android:layout_marginBottom="12dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
+            android:orientation="vertical"
+            android:background="@drawable/settings_group_bg"
+            android:padding="4dp"
+            android:layout_marginBottom="24dp">
 
-            <TextView
-                android:text="Completion animations"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="15sp"/>
-
-            <Switch
-                android:id="@+id/switchAnimations"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:text="Show momentum score"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="15sp"/>
-
-            <Switch
-                android:id="@+id/switchMomentum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:text="Annoying reminders mode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="15sp"/>
-
-            <Switch
-                android:id="@+id/switchAnnoyingMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:text="Minimal Mode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:text="Hides AI, burnout, community — just habits"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textColor="#888888"/>
-
+            <!-- minimal mode row -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <FrameLayout android:layout_width="36dp" android:layout_height="36dp" android:background="@drawable/settings_icon_bg_purple" android:layout_marginEnd="16dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="center" android:src="@android:drawable/ic_menu_view" android:tint="#FFFFFF" android:contentDescription="Minimal Mode Icon"/>
+                </FrameLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                    <TextView android:text="Minimal Mode" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="15sp" android:textColor="#FFFFFF"/>
+                    <TextView android:text="Just habits. Nothing else." android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="#666666"/>
+                </LinearLayout>
+                <Switch android:id="@+id/switchMinimalMode" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
             </LinearLayout>
 
-            <Switch
-                android:id="@+id/switchMinimalMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#2A2A2A"/>
+
+            <!-- animations row -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <FrameLayout android:layout_width="36dp" android:layout_height="36dp" android:background="@drawable/settings_icon_bg_orange" android:layout_marginEnd="16dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="center" android:src="@android:drawable/ic_menu_slideshow" android:tint="#FFFFFF" android:contentDescription="Animations Icon"/>
+                </FrameLayout>
+                <TextView android:text="Completion animations" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textSize="15sp" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/switchAnimations" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"/>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#2A2A2A"/>
+
+            <!-- momentum row -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <FrameLayout android:layout_width="36dp" android:layout_height="36dp" android:background="@drawable/settings_icon_bg_green" android:layout_marginEnd="16dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="center" android:src="@android:drawable/ic_menu_compass" android:tint="#FFFFFF" android:contentDescription="Momentum Icon"/>
+                </FrameLayout>
+                <TextView android:text="Show momentum score" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textSize="15sp" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/switchMomentum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"/>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -195,30 +110,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="11sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="#666666"
             android:letterSpacing="0.15"
             android:layout_marginBottom="12dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
+            android:orientation="vertical"
+            android:background="@drawable/settings_group_bg"
+            android:padding="4dp"
+            android:layout_marginBottom="24dp">
 
-            <TextView
-                android:text="Smart reminders"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="15sp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <FrameLayout android:layout_width="36dp" android:layout_height="36dp" android:background="@drawable/settings_icon_bg_blue" android:layout_marginEnd="16dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="center" android:src="@android:drawable/ic_dialog_info" android:tint="#FFFFFF" android:contentDescription="Reminders Icon"/>
+                </FrameLayout>
+                <TextView android:text="Smart reminders" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textSize="15sp" android:textColor="#FFFFFF"/>
+                <Switch android:id="@+id/switchReminders" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"/>
+            </LinearLayout>
 
-            <Switch
-                android:id="@+id/switchReminders"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"/>
+            <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#2A2A2A"/>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <FrameLayout android:layout_width="36dp" android:layout_height="36dp" android:background="@drawable/settings_icon_bg_red" android:layout_marginEnd="16dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="center" android:src="@android:drawable/ic_lock_silent_mode_off" android:tint="#FFFFFF" android:contentDescription="Annoying Mode Icon"/>
+                </FrameLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                    <TextView android:text="Annoying mode" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="15sp" android:textColor="#FFFFFF"/>
+                    <TextView android:text="Reminds every 30 mins" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="#666666"/>
+                </LinearLayout>
+                <Switch android:id="@+id/switchAnnoyingMode" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false"/>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -228,25 +151,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="11sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="#666666"
             android:letterSpacing="0.15"
             android:layout_marginBottom="12dp"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnExport"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Export Data as CSV"
-            android:layout_marginBottom="12dp"
-            style="@style/Widget.Material3.Button.OutlinedButton"/>
+            android:orientation="vertical"
+            android:background="@drawable/settings_group_bg"
+            android:padding="4dp"
+            android:layout_marginBottom="24dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSignOut"
+            <LinearLayout android:id="@+id/btnExportRow" android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <FrameLayout android:layout_width="36dp" android:layout_height="36dp" android:background="@drawable/settings_icon_bg_green" android:layout_marginEnd="16dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="center" android:src="@android:drawable/ic_menu_share" android:tint="#FFFFFF" android:contentDescription="Export Icon"/>
+                </FrameLayout>
+                <TextView android:text="Export Data as CSV" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textSize="15sp" android:textColor="#FFFFFF"/>
+                <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@android:drawable/ic_media_next" android:tint="#444444" android:contentDescription="Chevron"/>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#2A2A2A"/>
+
+            <LinearLayout android:id="@+id/btnSignOutRow" android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingStart="12dp" android:paddingEnd="12dp">
+                <FrameLayout android:layout_width="36dp" android:layout_height="36dp" android:background="@drawable/settings_icon_bg_red" android:layout_marginEnd="16dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="center" android:src="@android:drawable/ic_menu_close_clear_cancel" android:tint="#FFFFFF" android:contentDescription="Sign Out Icon"/>
+                </FrameLayout>
+                <TextView android:text="Sign Out" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textSize="15sp" android:textColor="#FF6B6B"/>
+                <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@android:drawable/ic_media_next" android:tint="#444444" android:contentDescription="Chevron"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:text="FLUX v1.0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign Out"
-            android:textColor="?attr/colorPrimary"
-            style="@style/Widget.Material3.Button.OutlinedButton"/>
+            android:textSize="12sp"
+            android:textColor="#333333"
+            android:layout_gravity="center"
+            android:gravity="center"/>
 
     </LinearLayout>
 </ScrollView>

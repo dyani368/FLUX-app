@@ -3,7 +3,6 @@ package com.example.flux.ui.dashboard;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,36 +17,34 @@ import java.util.Set;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHolder> {
 
-    private List<Habit> habits = new ArrayList<>();
-    private Set<Integer> loggedTodayIds = new HashSet<>();
-    private OnHabitSwipedListener swipeListener;
-    private OnHabitClickListener clickListener;
-    private OnCameraClickListener cameraListener;
-    private OnHabitLongClickListener longClickListener;
-
-    public interface OnHabitSwipedListener {
-        void onHabitSwiped(Habit habit);
-    }
-
-    public interface OnHabitClickListener {
+    public interface HabitClickListener {
         void onHabitClick(Habit habit);
     }
 
-    public interface OnCameraClickListener {
-        void onCameraClick(Habit habit);
-    }
-
-    public interface OnHabitLongClickListener {
+    public interface HabitLongClickListener {
         void onHabitLongClick(Habit habit);
     }
 
-    public HabitAdapter(OnHabitSwipedListener swipeListener,
-                        OnHabitClickListener clickListener,
-                        OnCameraClickListener cameraListener,
-                        OnHabitLongClickListener longClickListener) {
-        this.swipeListener = swipeListener;
+    public interface HabitPhotoListener {
+        void onPhotoClick(Habit habit);
+    }
+
+    private List<Habit> habits = new ArrayList<>();
+    private Set<Integer> loggedTodayIds = new HashSet<>();
+    private final HabitClickListener clickListener;
+    private final HabitClickListener statsListener;
+    private final HabitPhotoListener photoListener;
+    private final HabitLongClickListener longClickListener;
+    
+    private boolean minimalMode = false;
+
+    public HabitAdapter(HabitClickListener clickListener,
+                        HabitClickListener statsListener,
+                        HabitPhotoListener photoListener,
+                        HabitLongClickListener longClickListener) {
         this.clickListener = clickListener;
-        this.cameraListener = cameraListener;
+        this.statsListener = statsListener;
+        this.photoListener = photoListener;
         this.longClickListener = longClickListener;
     }
 
@@ -56,8 +53,13 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
         notifyDataSetChanged();
     }
 
-    public void setLoggedTodayIds(Set<Integer> ids) {
-        this.loggedTodayIds = ids;
+    public void setLoggedTodayIds(Set<Integer> loggedIds) {
+        this.loggedTodayIds = loggedIds;
+        notifyDataSetChanged();
+    }
+    
+    public void setMinimalMode(boolean minimal) {
+        this.minimalMode = minimal;
         notifyDataSetChanged();
     }
 
@@ -78,42 +80,54 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
         Habit habit = habits.get(position);
         holder.tvName.setText(habit.name);
         holder.tvCategory.setText(habit.category);
-        holder.tvDifficulty.setText("★".repeat(Math.max(0, habit.difficulty)));
+        
+        // Convert int difficulty to String to avoid Resources$NotFoundException
+        String diffText = "";
+        for (int i = 0; i < habit.difficulty; i++) diffText += "★";
+        holder.tvDifficulty.setText(diffText);
 
-        // status bar color + badges
+        boolean isLogged = loggedTodayIds.contains(habit.id);
+        holder.viewStatusBar.setBackgroundColor(isLogged ? 0xFF4CAF50 : 0xFF333333);
+        
         if (habit.isPaused) {
-            holder.viewStatusBar.setBackgroundColor(0xFFFFB300);
+            holder.itemView.setAlpha(0.5f);
+            holder.tvCategory.setText(habit.category + " (Paused)");
             holder.tvPausedBadge.setVisibility(View.VISIBLE);
-            holder.tvLoggedBadge.setVisibility(View.GONE);
-        } else if (loggedTodayIds.contains(habit.id)) {
-            holder.viewStatusBar.setBackgroundColor(0xFF4CAF50);
-            holder.tvLoggedBadge.setVisibility(View.VISIBLE);
-            holder.tvPausedBadge.setVisibility(View.GONE);
         } else {
-            holder.viewStatusBar.setBackgroundColor(0xFFB8A2D1);
+            holder.itemView.setAlpha(1.0f);
             holder.tvPausedBadge.setVisibility(View.GONE);
+        }
+
+        if (isLogged) {
+            holder.tvLoggedBadge.setVisibility(View.VISIBLE);
+        } else {
             holder.tvLoggedBadge.setVisibility(View.GONE);
         }
 
-        holder.itemView.setOnClickListener(v -> {
-            if (clickListener != null) {
-                clickListener.onHabitClick(habit);
-            }
-        });
-
+        holder.itemView.setOnClickListener(v -> clickListener.onHabitClick(habit));
         holder.itemView.setOnLongClickListener(v -> {
-            if (longClickListener != null) {
-                longClickListener.onHabitLongClick(habit);
-                return true;
-            }
-            return false;
+            longClickListener.onHabitLongClick(habit);
+            return true;
         });
 
-        holder.btnCamera.setOnClickListener(v -> {
-            if (cameraListener != null) {
-                cameraListener.onCameraClick(habit);
-            }
-        });
+        holder.btnStats.setOnClickListener(v -> statsListener.onHabitClick(habit));
+        holder.btnCamera.setOnClickListener(v -> photoListener.onPhotoClick(habit));
+        
+        // Minimal Mode Overrides
+        if (minimalMode) {
+            holder.viewStatusBar.setBackgroundColor(0xFF333333);
+            holder.tvName.setTextColor(0xFFFFFFFF);
+            holder.tvCategory.setTextColor(0xFF555555);
+            holder.tvDifficulty.setTextColor(0xFF444444);
+            holder.btnCamera.setVisibility(View.GONE);
+            holder.btnStats.setVisibility(View.GONE);
+        } else {
+            holder.tvName.setTextColor(0xFFFFFFFF);
+            holder.tvCategory.setTextColor(0xFF666666);
+            holder.tvDifficulty.setTextColor(0xFFB8A2D1);
+            holder.btnCamera.setVisibility(View.VISIBLE);
+            holder.btnStats.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -123,18 +137,18 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
 
     static class HabitViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvCategory, tvDifficulty, tvPausedBadge, tvLoggedBadge;
-        ImageButton btnCamera;
-        View viewStatusBar;
+        View viewStatusBar, btnStats, btnCamera;
 
-        HabitViewHolder(@NonNull View itemView) {
+        public HabitViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvHabitName);
             tvCategory = itemView.findViewById(R.id.tvHabitCategory);
             tvDifficulty = itemView.findViewById(R.id.tvDifficulty);
             tvPausedBadge = itemView.findViewById(R.id.tvPausedBadge);
             tvLoggedBadge = itemView.findViewById(R.id.tvLoggedBadge);
-            btnCamera = itemView.findViewById(R.id.btnCamera);
             viewStatusBar = itemView.findViewById(R.id.viewStatusBar);
+            btnStats = itemView.findViewById(R.id.btnHabitStats);
+            btnCamera = itemView.findViewById(R.id.btnHabitPhoto);
         }
     }
 }
