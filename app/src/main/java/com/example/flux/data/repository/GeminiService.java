@@ -24,9 +24,9 @@ public class GeminiService {
     private static final String TAG = "GeminiService";
     private static final String API_KEY = BuildConfig.GEMINI_API_KEY;
     
-    // Updated to gemini-2.0-flash with v1beta endpoint
+    // Switched to v1beta and gemini-2.5-flash for consistent compatibility and latest feature access
     private static final String URL =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + API_KEY;
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + API_KEY;
 
     private final OkHttpClient client = new OkHttpClient();
 
@@ -64,6 +64,14 @@ public class GeminiService {
     }
 
     private void sendRequest(String prompt, GeminiCallback callback) {
+        if (API_KEY == null || API_KEY.isEmpty()) {
+            Log.e(TAG, "API Key is missing in BuildConfig!");
+            callback.onError("API Key is missing");
+            return;
+        }
+
+        Log.d(TAG, "Sending request to Gemini. Key prefix: " + (API_KEY.length() > 8 ? API_KEY.substring(0, 8) : "???"));
+
         try {
             JSONObject part = new JSONObject().put("text", prompt);
             JSONObject content = new JSONObject()
@@ -114,6 +122,7 @@ public class GeminiService {
                                 callback.onResult(text));
                     } catch (Exception e) {
                         Log.e(TAG, "JSON Parse Error", e);
+                        Log.e(TAG, "API Response that failed parse: " + responseBody);
                         new Handler(Looper.getMainLooper()).post(() ->
                                 callback.onError("Invalid response format"));
                     }

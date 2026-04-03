@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private HabitViewModel viewModel;
     private HabitAdapter adapter;
     private String currentTheme;
+    private boolean dailyTipLoaded = false;
+    private float lastAvgSleep = 7.0f; // updated from sleep observers
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         setupGeminiInsight();
         setupAddButton();
         setupBottomNav();
-        loadDailyTip();
+        // loadDailyTip() is now called from inside setupObservers() once momentum is ready
 
         findViewById(R.id.btnSettingsShortcut).setOnClickListener(v ->
                 startActivity(new Intent(this, SettingsActivity.class)));
@@ -99,31 +101,57 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupChips() {
-        TextView chipAll = findViewById(R.id.chipAll);
-        TextView chipMorning = findViewById(R.id.chipMorning);
+        TextView chipAll       = findViewById(R.id.chipAll);
+        TextView chipMorning   = findViewById(R.id.chipMorning);
         TextView chipAfternoon = findViewById(R.id.chipAfternoon);
-        TextView chipEvening = findViewById(R.id.chipEvening);
+        TextView chipEvening   = findViewById(R.id.chipEvening);
 
-        View.OnClickListener chipListener = v -> {
-            // reset all
-            chipAll.setBackgroundResource(R.drawable.chip_inactive);
-            chipAll.setTextColor(0xFF888888);
-            chipMorning.setBackgroundResource(R.drawable.chip_inactive);
-            chipMorning.setTextColor(0xFF888888);
-            chipAfternoon.setBackgroundResource(R.drawable.chip_inactive);
-            chipAfternoon.setTextColor(0xFF888888);
-            chipEvening.setBackgroundResource(R.drawable.chip_inactive);
-            chipEvening.setTextColor(0xFF888888);
+        TextView[] chips = {chipAll, chipMorning, chipAfternoon, chipEvening};
 
-            // activate selected
-            ((TextView) v).setBackgroundResource(R.drawable.chip_active);
-            ((TextView) v).setTextColor(0xFF121212);
+        // Use dark text on the accent-colored chip (colorPrimary background is always mid-tone)
+        final int activeTextColor = ThemeManager.WARM_NEUTRAL.equals(ThemeManager.getTheme(this))
+                ? 0xFF1A1A1A  // dark on light primary
+                : 0xFF1A1A1A; // dark works for all accent colors
+
+        // Helper to reset all chips to inactive style
+        Runnable resetAll = () -> {
+            for (TextView chip : chips) {
+                chip.setBackgroundResource(R.drawable.chip_inactive);
+                chip.setTextColor(0xFF888888);
+            }
         };
 
-        chipAll.setOnClickListener(chipListener);
-        chipMorning.setOnClickListener(chipListener);
-        chipAfternoon.setOnClickListener(chipListener);
-        chipEvening.setOnClickListener(chipListener);
+        chipAll.setOnClickListener(v -> {
+            resetAll.run();
+            chipAll.setBackgroundResource(R.drawable.chip_active);
+            chipAll.setTextColor(activeTextColor);
+            adapter.setFilter(HabitAdapter.FILTER_ALL);
+        });
+
+        chipMorning.setOnClickListener(v -> {
+            resetAll.run();
+            chipMorning.setBackgroundResource(R.drawable.chip_active);
+            chipMorning.setTextColor(activeTextColor);
+            adapter.setFilter(HabitAdapter.FILTER_MORNING);
+        });
+
+        chipAfternoon.setOnClickListener(v -> {
+            resetAll.run();
+            chipAfternoon.setBackgroundResource(R.drawable.chip_active);
+            chipAfternoon.setTextColor(activeTextColor);
+            adapter.setFilter(HabitAdapter.FILTER_AFTERNOON);
+        });
+
+        chipEvening.setOnClickListener(v -> {
+            resetAll.run();
+            chipEvening.setBackgroundResource(R.drawable.chip_active);
+            chipEvening.setTextColor(activeTextColor);
+            adapter.setFilter(HabitAdapter.FILTER_EVENING);
+        });
+
+        // Default: "All" selected
+        chipAll.setBackgroundResource(R.drawable.chip_active);
+        chipAll.setTextColor(activeTextColor);
     }
 
     private void applyMinimalMode() {
@@ -160,13 +188,28 @@ public class MainActivity extends AppCompatActivity {
             applyMonochromeToHabits();
 
         } else {
-            // restore full mode
-            getWindow().getDecorView().setBackgroundColor(0xFF121212);
+            // restore full mode — resolve background from active theme
+            android.util.TypedValue bgTv = new android.util.TypedValue();
+            getTheme().resolveAttribute(android.R.attr.windowBackground, bgTv, true);
+            if (bgTv.resourceId != 0) {
+                getWindow().getDecorView().setBackgroundResource(bgTv.resourceId);
+            } else {
+                getWindow().getDecorView().setBackgroundColor(ThemeManager.getBackgroundColor(this));
+            }
+
             findViewById(R.id.cardAiInsight).setVisibility(View.VISIBLE);
             findViewById(R.id.cardDailyTip).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutStatusRow).setVisibility(View.VISIBLE);
             // chips
             findViewById(R.id.layoutChips).setVisibility(View.VISIBLE);
+
+            // restore bottom nav to theme colors
+            BottomNavigationView nav = findViewById(R.id.bottomNav);
+            nav.getMenu().findItem(R.id.nav_social).setVisible(true);
+            nav.getMenu().findItem(R.id.nav_sleep).setVisible(true);
+            nav.setBackgroundColor(ThemeManager.getCardColor(this));
+            nav.setItemIconTintList(
+                android.content.res.ColorStateList.valueOf(ThemeManager.getAccentColor(this)));
         }
     }
 
@@ -375,7 +418,6 @@ public class MainActivity extends AppCompatActivity {
             Map<Integer, Float> sleep = new HashMap<>();
 
             Calendar cal = Calendar.getInstance();
-            // get current month boundaries
             cal.set(Calendar.DAY_OF_MONTH, 1);
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
@@ -416,13 +458,25 @@ public class MainActivity extends AppCompatActivity {
             TextView tvMomentum = findViewById(R.id.tvMomentum);
             TextView skeleton = findViewById(R.id.tvMomentumSkeleton);
 
-            if (skeleton != null) {
-                skeleton.setVisibility(View.GONE);
-            }
+            if (skeleton != null) skeleton.setVisibility(View.GONE);
             if (tvMomentum != null) {
                 tvMomentum.setVisibility(View.VISIBLE);
                 tvMomentum.setText(String.format(Locale.getDefault(), "%.0f / 100", momentum));
             }
+
+            // Load daily tip once, after we have real momentum data
+            if (!dailyTipLoaded) {
+                dailyTipLoaded = true;
+                loadDailyTip(momentum);
+            }
+        });
+
+        // Observe sleep to keep lastAvgSleep up to date
+        viewModel.getLastSevenDays().observe(this, sleepLogs -> {
+            if (sleepLogs == null || sleepLogs.isEmpty()) return;
+            float total = 0;
+            for (com.example.flux.data.local.SleepLog s : sleepLogs) total += s.hours;
+            lastAvgSleep = total / sleepLogs.size();
         });
     }
 
@@ -431,6 +485,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tvInsight = findViewById(R.id.tvAiInsight);
 
         findViewById(R.id.btnGetInsight).setOnClickListener(v -> {
+            v.setEnabled(false);
             tvInsight.setText("Analysing your week...");
 
             float burnout = viewModel.getBurnoutIndex().getValue() != null
@@ -439,20 +494,26 @@ public class MainActivity extends AppCompatActivity {
                     ? viewModel.getMomentumScore().getValue() : 50f;
 
             int totalHabits = adapter.getItemCount();
-            // Estimate completed from momentum (momentum is 0-100 score)
             int completedHabits = (int) ((momentum / 100f) * totalHabits * 7);
 
+            // Use real avg sleep from observers
             gemini.getWeeklyInsight(
-                    completedHabits, totalHabits * 7,
-                    7.0f,
+                    completedHabits, Math.max(1, totalHabits * 7),
+                    lastAvgSleep,
                     burnout,
-                    "some habits",
+                    totalHabits == 0 ? "no habits set up yet" : "some habits",
                     new GeminiService.GeminiCallback() {
                         @Override public void onResult(String insight) {
-                            tvInsight.setText(insight);
+                            runOnUiThread(() -> {
+                                tvInsight.setText(insight);
+                                v.setEnabled(true);
+                            });
                         }
                         @Override public void onError(String error) {
-                            tvInsight.setText("Couldn't load insight. Check your API key or internet connection.");
+                            runOnUiThread(() -> {
+                                tvInsight.setText("Couldn't load insight: " + error);
+                                v.setEnabled(true);
+                            });
                         }
                     });
         });
@@ -482,21 +543,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadDailyTip() {
+    private void loadDailyTip(float momentum) {
         TextView tvTip = findViewById(R.id.tvDailyTip);
+        if (tvTip == null) return;
         GeminiService gemini = new GeminiService();
-
-        float momentum = viewModel.getMomentumScore().getValue() != null
-                ? viewModel.getMomentumScore().getValue() : 100f;
 
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         String timeOfDay = hour < 12 ? "morning" : hour < 17 ? "afternoon" : "evening";
 
-        gemini.getDailyTip(6.5f, momentum, "consistency", timeOfDay,
+        gemini.getDailyTip(lastAvgSleep, momentum, "consistency", timeOfDay,
                 new GeminiService.GeminiCallback() {
-                    @Override public void onResult(String tip) { tvTip.setText(tip); }
+                    @Override public void onResult(String tip) {
+                        runOnUiThread(() -> tvTip.setText(tip));
+                    }
                     @Override public void onError(String e) {
-                        tvTip.setText("Rest well tonight — consistency beats intensity every time.");
+                        runOnUiThread(() -> tvTip.setText(
+                            "Stay consistent today — every small step compounds over time."));
                     }
                 });
     }

@@ -29,27 +29,60 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
         void onPhotoClick(Habit habit);
     }
 
-    private List<Habit> habits = new ArrayList<>();
+    // Filter constants — match what the chips set
+    public static final String FILTER_ALL       = "all";
+    public static final String FILTER_MORNING   = "Morning";
+    public static final String FILTER_AFTERNOON = "Afternoon";
+    public static final String FILTER_EVENING   = "Evening";
+
+    private List<Habit> allHabits   = new ArrayList<>();  // full unfiltered list
+    private List<Habit> habits      = new ArrayList<>();  // currently displayed
     private Set<Integer> loggedTodayIds = new HashSet<>();
     private final HabitClickListener clickListener;
     private final HabitClickListener statsListener;
     private final HabitPhotoListener photoListener;
     private final HabitLongClickListener longClickListener;
-    
+
     private boolean minimalMode = false;
+    private String currentFilter = FILTER_ALL;
 
     public HabitAdapter(HabitClickListener clickListener,
                         HabitClickListener statsListener,
                         HabitPhotoListener photoListener,
                         HabitLongClickListener longClickListener) {
-        this.clickListener = clickListener;
-        this.statsListener = statsListener;
-        this.photoListener = photoListener;
+        this.clickListener     = clickListener;
+        this.statsListener     = statsListener;
+        this.photoListener     = photoListener;
         this.longClickListener = longClickListener;
     }
 
+    /** Called by ViewModel observer with the full (unfiltered) list. */
     public void setHabits(List<Habit> habits) {
-        this.habits = habits;
+        this.allHabits = habits != null ? habits : new ArrayList<>();
+        applyFilter();
+    }
+
+    /** Called by chip buttons. filter is FILTER_ALL / FILTER_MORNING / etc. */
+    public void setFilter(String filter) {
+        this.currentFilter = filter;
+        applyFilter();
+    }
+
+    private void applyFilter() {
+        if (currentFilter == null || currentFilter.equals(FILTER_ALL)) {
+            habits = new ArrayList<>(allHabits);
+        } else {
+            habits = new ArrayList<>();
+            for (Habit h : allHabits) {
+                // Match against the habit's frequency field (e.g. "Morning", "Afternoon", "Evening")
+                // or against category if frequency isn't set
+                String freq = h.frequency != null ? h.frequency : "";
+                String cat  = h.category  != null ? h.category  : "";
+                if (freq.equalsIgnoreCase(currentFilter) || cat.equalsIgnoreCase(currentFilter)) {
+                    habits.add(h);
+                }
+            }
+        }
         notifyDataSetChanged();
     }
 
@@ -57,7 +90,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
         this.loggedTodayIds = loggedIds;
         notifyDataSetChanged();
     }
-    
+
     public void setMinimalMode(boolean minimal) {
         this.minimalMode = minimal;
         notifyDataSetChanged();
@@ -80,15 +113,14 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
         Habit habit = habits.get(position);
         holder.tvName.setText(habit.name);
         holder.tvCategory.setText(habit.category);
-        
-        // Convert int difficulty to String to avoid Resources$NotFoundException
+
         String diffText = "";
         for (int i = 0; i < habit.difficulty; i++) diffText += "★";
         holder.tvDifficulty.setText(diffText);
 
         boolean isLogged = loggedTodayIds.contains(habit.id);
         holder.viewStatusBar.setBackgroundColor(isLogged ? 0xFF4CAF50 : 0xFF333333);
-        
+
         if (habit.isPaused) {
             holder.itemView.setAlpha(0.5f);
             holder.tvCategory.setText(habit.category + " (Paused)");
@@ -98,11 +130,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
             holder.tvPausedBadge.setVisibility(View.GONE);
         }
 
-        if (isLogged) {
-            holder.tvLoggedBadge.setVisibility(View.VISIBLE);
-        } else {
-            holder.tvLoggedBadge.setVisibility(View.GONE);
-        }
+        holder.tvLoggedBadge.setVisibility(isLogged ? View.VISIBLE : View.GONE);
 
         holder.itemView.setOnClickListener(v -> clickListener.onHabitClick(habit));
         holder.itemView.setOnLongClickListener(v -> {
@@ -112,7 +140,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
 
         holder.btnStats.setOnClickListener(v -> statsListener.onHabitClick(habit));
         holder.btnCamera.setOnClickListener(v -> photoListener.onPhotoClick(habit));
-        
+
         // Minimal Mode Overrides
         if (minimalMode) {
             holder.viewStatusBar.setBackgroundColor(0xFF333333);
@@ -123,7 +151,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
             holder.btnStats.setVisibility(View.GONE);
         } else {
             holder.tvName.setTextColor(0xFFFFFFFF);
-            holder.tvCategory.setTextColor(0xFF666666);
+            holder.tvCategory.setTextColor(0xFF888888);
             holder.tvDifficulty.setTextColor(0xFFB8A2D1);
             holder.btnCamera.setVisibility(View.VISIBLE);
             holder.btnStats.setVisibility(View.VISIBLE);
@@ -141,14 +169,14 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
 
         public HabitViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tvHabitName);
-            tvCategory = itemView.findViewById(R.id.tvHabitCategory);
-            tvDifficulty = itemView.findViewById(R.id.tvDifficulty);
+            tvName        = itemView.findViewById(R.id.tvHabitName);
+            tvCategory    = itemView.findViewById(R.id.tvHabitCategory);
+            tvDifficulty  = itemView.findViewById(R.id.tvDifficulty);
             tvPausedBadge = itemView.findViewById(R.id.tvPausedBadge);
             tvLoggedBadge = itemView.findViewById(R.id.tvLoggedBadge);
             viewStatusBar = itemView.findViewById(R.id.viewStatusBar);
-            btnStats = itemView.findViewById(R.id.btnHabitStats);
-            btnCamera = itemView.findViewById(R.id.btnHabitPhoto);
+            btnStats      = itemView.findViewById(R.id.btnHabitStats);
+            btnCamera     = itemView.findViewById(R.id.btnHabitPhoto);
         }
     }
 }

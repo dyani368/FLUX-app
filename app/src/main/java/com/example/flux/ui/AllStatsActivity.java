@@ -32,6 +32,7 @@ public class AllStatsActivity extends AppCompatActivity {
     private List<Habit> habitList = new ArrayList<>();
     private Map<Integer, Integer> logCountMap = new HashMap<>();
     private StatsAdapter adapter;
+    private String currentTheme;
 
     // tab views
     private View contentCalendar, contentAchievements;
@@ -40,6 +41,7 @@ public class AllStatsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        currentTheme = ThemeManager.getTheme(this);
         ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_stats);
@@ -71,9 +73,12 @@ public class AllStatsActivity extends AppCompatActivity {
         rvAllStats.setVisibility(index == 1 ? View.VISIBLE : View.GONE);
         contentAchievements.setVisibility(index == 2 ? View.VISIBLE : View.GONE);
 
-        tabCalendar.setTextColor(index == 0 ? 0xFFFFFFFF : 0xFF666666);
-        tabAllHabits.setTextColor(index == 1 ? 0xFFFFFFFF : 0xFF666666);
-        tabAchievements.setTextColor(index == 2 ? 0xFFFFFFFF : 0xFF666666);
+        int activeColor   = ThemeManager.getTextColor(this);
+        int inactiveColor = activeColor & 0x66FFFFFF; // 40% opacity of active color
+
+        tabCalendar.setTextColor(index == 0 ? activeColor : inactiveColor);
+        tabAllHabits.setTextColor(index == 1 ? activeColor : inactiveColor);
+        tabAchievements.setTextColor(index == 2 ? activeColor : inactiveColor);
 
         setTabActive(tabCalendar, index == 0);
         setTabActive(tabAllHabits, index == 1);
@@ -196,6 +201,15 @@ public class AllStatsActivity extends AppCompatActivity {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTimeInMillis();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String theme = ThemeManager.getTheme(this);
+        if (!theme.equals(currentTheme)) {
+            recreate();
+        }
     }
 
     private void updateAchievements() {

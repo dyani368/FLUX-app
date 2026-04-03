@@ -19,9 +19,11 @@ import java.io.File;
 public class SettingsActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
+    private String currentTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        currentTheme = ThemeManager.getTheme(this);
         ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
@@ -56,8 +58,12 @@ public class SettingsActivity extends AppCompatActivity {
             else                                  selected = ThemeManager.DARK_MINIMAL;
 
             ThemeManager.saveTheme(this, selected);
-            // restart to apply
-            recreate();
+
+            // Restart the entire app so ALL activities pick up the new theme
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
     }
 
@@ -115,5 +121,15 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finishAffinity();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String theme = ThemeManager.getTheme(this);
+        if (!theme.equals(currentTheme)) {
+            currentTheme = theme;
+            recreate();
+        }
     }
 }

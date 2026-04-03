@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#121212">
+    android:background="?android:attr/windowBackground">
 
     <!-- header -->
     <TextView
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="32sp"
-        android:textColor="#FFFFFF"
+        android:textColor="?attr/colorOnSurface"
         android:textStyle="bold"
         android:paddingStart="24dp"
         android:paddingTop="52dp"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="Calendar"
             android:textSize="16sp"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"
             android:paddingBottom="8dp"
             android:layout_marginEnd="24dp"/>
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:text="All Habits"
             android:textSize="16sp"
-            android:textColor="#666666"
+            android:textColor="?android:attr/textColorSecondary"
             android:paddingBottom="8dp"
             android:layout_marginEnd="24dp"/>
 
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:text="Achievements"
             android:textSize="16sp"
-            android:textColor="#666666"
+            android:textColor="?android:attr/textColorSecondary"
             android:paddingBottom="8dp"/>
 
     </LinearLayout>
@@ -216,7 +216,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="#1E1E1E"
+                    app:cardBackgroundColor="?attr/colorSurface"
                     app:cardCornerRadius="20dp">
 
                     <LinearLayout
@@ -231,7 +231,7 @@
                             android:layout_height="wrap_content"
                             android:text="March 2026"
                             android:textSize="16sp"
-                            android:textColor="#FFFFFF"
+                            android:textColor="?attr/colorOnSurface"
                             android:textStyle="bold"
                             android:gravity="center"
                             android:layout_gravity="center"
@@ -244,13 +244,13 @@
                             android:orientation="horizontal"
                             android:layout_marginBottom="8dp">
 
-                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="SUN" android:textSize="10sp" android:textColor="#666666" android:gravity="center"/>
-                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="MON" android:textSize="10sp" android:textColor="#666666" android:gravity="center"/>
-                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="TUE" android:textSize="10sp" android:textColor="#666666" android:gravity="center"/>
-                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="WED" android:textSize="10sp" android:textColor="#666666" android:gravity="center"/>
-                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="THU" android:textSize="10sp" android:textColor="#666666" android:gravity="center"/>
-                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="FRI" android:textSize="10sp" android:textColor="#666666" android:gravity="center"/>
-                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="SAT" android:textSize="10sp" android:textColor="#666666" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="SUN" android:textSize="10sp" android:textColor="?android:attr/textColorSecondary" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="MON" android:textSize="10sp" android:textColor="?android:attr/textColorSecondary" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="TUE" android:textSize="10sp" android:textColor="?android:attr/textColorSecondary" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="WED" android:textSize="10sp" android:textColor="?android:attr/textColorSecondary" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="THU" android:textSize="10sp" android:textColor="?android:attr/textColorSecondary" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="FRI" android:textSize="10sp" android:textColor="?android:attr/textColorSecondary" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="SAT" android:textSize="10sp" android:textColor="?android:attr/textColorSecondary" android:gravity="center"/>
 
                         </LinearLayout>
 
@@ -294,7 +294,7 @@
                     android:layout_height="wrap_content"
                     android:text="🏆  Most Consistent Habit"
                     android:textSize="14sp"
-                    android:textColor="#888888"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginBottom="4dp"/>
 
                 <TextView
@@ -303,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:text="—"
                     android:textSize="24sp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold"
                     android:layout_marginBottom="24dp"/>
 
@@ -312,7 +312,7 @@
                     android:layout_height="wrap_content"
                     android:text="🔥  Longest Streak"
                     android:textSize="14sp"
-                    android:textColor="#888888"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginBottom="4dp"/>
 
                 <TextView
@@ -321,7 +321,7 @@
                     android:layout_height="wrap_content"
                     android:text="0 days"
                     android:textSize="24sp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold"
                     android:layout_marginBottom="24dp"/>
 
@@ -330,7 +330,7 @@
                     android:layout_height="wrap_content"
                     android:text="💤  Average Sleep"
                     android:textSize="14sp"
-                    android:textColor="#888888"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginBottom="4dp"/>
 
                 <TextView
@@ -339,7 +339,7 @@
                     android:layout_height="wrap_content"
                     android:text="— hrs"
                     android:textSize="24sp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold"/>
 
             </LinearLayout>
